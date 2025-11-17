@@ -19,13 +19,18 @@ public class Book
         get => _stock;
         private set => _stock = value;
     }
-    public bool IsAvailable { get; }
+    public bool IsAvailable { get; private set; }
 
     public Book(string isbn, string title, string author, double price, int stock)
     {
-        if (price < 0 || stock < 0)
+        if (price < 0)
         {
-            throw new ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException(nameof(price), "Price cannot be negative");
+        }
+
+        if (stock < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(stock), "Stock cannot be negative");
         }
         Isbn = isbn;
         Title = title;
@@ -39,21 +44,26 @@ public class Book
     {
         if (Stock == 0)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Cannot rent stock is zero");
         }
         Stock--;
+        if (Stock == 0)
+        {
+            IsAvailable = false;
+        }
     }
 
     public void Return()
     {
         Stock++;
+        IsAvailable = true;
     }
 
     public void Reprice(double newPrice)
     {
         if (newPrice < 0)
         {
-            throw new ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException(nameof(newPrice), "Price cannot be negative");
         }
         Price = newPrice;
     }

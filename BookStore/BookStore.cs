@@ -4,7 +4,11 @@ public class BookStore
 {
     private Catalog _catalog;
     
-    public Catalog Catalog { get; }
+    public Catalog Catalog
+    {
+        get => _catalog;
+        private set => _catalog = value;
+    }
 
     public BookStore(Catalog catalog)
     {
